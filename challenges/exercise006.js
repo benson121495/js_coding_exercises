@@ -6,6 +6,14 @@
  */
 export const sumMultiples = (arr) => {
   if (arr === undefined) throw new Error("arr is required");
+
+  let total = 0;
+  arr.forEach(n => {
+    if (n % 5 === 0 || n % 3 === 0) {
+      total += n;
+    }
+  });
+  return total;
 };
 
 /**
@@ -15,6 +23,19 @@ export const sumMultiples = (arr) => {
  */
 export const isValidDNA = (str) => {
   if (str === undefined) throw new Error("str is required");
+  if (str !== "") {
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] === "C" || str[i] === "G" || str[i] === "T" || str[i] === "A") {
+        continue;
+      } else {
+        return false;
+      }
+    }
+  } else {
+    return false;
+  }
+
+  return true;
 };
 
 /**
@@ -24,6 +45,22 @@ export const isValidDNA = (str) => {
  */
 export const getComplementaryDNA = (str) => {
   if (str === undefined) throw new Error("str is required");
+
+  let newForm = [];
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === 'A') {
+      newForm.push('T');
+    } else if (str[i] === 'C') {
+      newForm.push('G');
+    } else if (str[i] === 'T') {
+      newForm.push('A');
+    } else if (str[i] === 'G') {
+      newForm.push('C');
+    } else {
+      return false;
+    }
+  };
+  return newForm.toString(' ').replace(/[^a-zA-Z0-9]/g, "");
 };
 
 /**
@@ -33,6 +70,17 @@ export const getComplementaryDNA = (str) => {
  */
 export const isItPrime = (n) => {
   if (n === undefined) throw new Error("n is required");
+
+  if (n < 2) {
+    return false;
+  } else {
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+      if (n % i === 0) {
+        return false;
+      }
+    }
+  }
+  return true;
 };
 
 /**
@@ -49,6 +97,12 @@ export const isItPrime = (n) => {
 export const createMatrix = (n, fill) => {
   if (n === undefined) throw new Error("n is required");
   if (fill === undefined) throw new Error("fill is required");
+
+  let newArray = [] ;
+  for (let i = 0; i < n; i++) {
+    newArray.push(fill)
+  }
+  return Array(n).fill(newArray);
 };
 
 /**
@@ -66,4 +120,19 @@ export const createMatrix = (n, fill) => {
 export const areWeCovered = (staff, day) => {
   if (staff === undefined) throw new Error("staff is required");
   if (day === undefined) throw new Error("day is required");
+
+  let count = 0;
+  if (staff.length < 3) {
+    return false ;
+  }
+  for (let i = 0; i < staff.length; i++) {
+    if (staff[i].rota.includes(day)) {
+      count += 1 ;
+    }
+  }
+  if (count >= 3) {
+    return true ;
+  } else {
+    return false ;
+  }
 };

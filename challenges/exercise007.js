@@ -4,6 +4,10 @@
  */
 export const sumDigits = (n) => {
   if (n === undefined) throw new Error("n is required");
+
+  const arr = Array.from(String(n), Number);
+
+  return arr.reduce((a, b) => a + b);
 };
 
 /**
@@ -21,6 +25,13 @@ export const createRange = (start, end, step) => {
     console.log(
       "FYI: Optional step parameter not provided. Remove this check once you've handled the optional step!"
     );
+
+  let array = [];
+  for (let i = start; i <= end; i += step) {
+    array.push(i);
+  }
+  console.log(array);
+  return array;
 };
 
 /**
@@ -55,6 +66,16 @@ export const createRange = (start, end, step) => {
 export const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
+  let username = [];
+  for (let i = 0; i < users.length; i++) {
+    for (let j = 0; j < users[i].screenTime.length; j++) {
+      if (users[i].screenTime[j].date === date) {
+        const arr = Object.values(users[i].screenTime[j].usage);
+        if (arr.reduce((a, b) => a + b) > 100) username.push(users[i].username);
+      }
+    }
+  }
+  return username;
 };
 
 /**
@@ -69,6 +90,12 @@ export const getScreentimeAlertList = (users, date) => {
  */
 export const hexToRGB = (hexStr) => {
   if (hexStr === undefined) throw new Error("hexStr is required");
+
+  const hexArr = hexStr
+    .slice(1)
+    .match(/.{1,2}/g)
+    .map((e) => parseInt(e, 16));
+  return `rgb(${hexArr})`;
 };
 
 /**
@@ -83,4 +110,32 @@ export const hexToRGB = (hexStr) => {
  */
 export const findWinner = (board) => {
   if (board === undefined) throw new Error("board is required");
+
+  const horizontalCheck = () => {
+    for (let i = 0; i < board.length; i++) {
+      if ([...new Set(board[i])].length === 1) {
+        return board[i][0];
+      }
+    }
+  };
+
+  if (horizontalCheck()) {
+    return horizontalCheck();
+  } else {
+    const findVerticalCheck = () => {
+      const items = ["X", "0"];
+      const count = items.map((item) => {
+        return [...new Set(board.map((line) => line.indexOf(item)))].length;
+      });
+
+      for (let i = 0; i < count.length; i++) {
+        if (count[i] === 1 || count[i] === 3) {
+          return count.indexOf(count[i]) === 0 ? "X" : "0";
+        }
+      }
+      return null;
+    };
+
+    return findVerticalCheck();
+  }
 };
